@@ -28,14 +28,14 @@ class RepositoryTest extends TestCase
         $this->assertEquals($this->repository->insertTeam($teams[4]), 5);
         $this->assertEquals($this->repository->teams(), [$teams[4]]);
     }
-/*
+
     function testMatchesAndInsertMatch(): void
     {
         $teams = $this->data->teams();
         $matches = $this->data->matches();
         // TODO : tester la méthode insertMatch
-        $this->assertEquals($this->repository->insertMatch($matches[4]), 2);
+        $this->assertEquals($this->repository->insertMatch($matches[4]), 5);
         $this->assertEquals($this->repository->matches(), [$matches[4]]);
-    }*/
+    }
      
 }
