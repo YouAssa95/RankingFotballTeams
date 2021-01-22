@@ -9,8 +9,7 @@ use App\Repositories\Data;
 
 class RankingTest extends TestCase
 { 
-
-
+    
     function testGoalDifference(): void 
     {
         $ranking = $this->ranking;
@@ -28,7 +27,7 @@ class RankingTest extends TestCase
         $this->match1 = ['id' => 231, 'team0' => 4, 'team1' => 2, 'score0' => 2, 'score1' => 2, 'date' => '2048-01-01 00:00:00'];
         $this->match2 = ['id' => 222, 'team0' => 3, 'team1' => 2, 'score0' => 1, 'score1' => 3, 'date' => '2048-01-01 00:00:00'];
         
-        $this->data = new  Data();
+        $this->datanew = new  Data();
     }
 
     function testTeamWinsMatch(): void 
@@ -91,7 +90,6 @@ function testGoalAgainstCountDuringAMatch(): void
  
     function testGoalForCount(): void 
     {
-
         foreach ($this->data->expectedUnsortedRanking() as $row) {
             $this->assertEquals($this->ranking->goalForCount($row['team_id'], $this->data->matches()), $row['goal_for_count']);
         }
@@ -99,14 +97,12 @@ function testGoalAgainstCountDuringAMatch(): void
 
     function testGoalAgainstCount(): void 
     {
-
         foreach ($this->data->expectedUnsortedRanking() as $row) {
             $this->assertEquals($this->ranking->goalAgainstCount($row['team_id'], $this->data->matches()), $row['goal_against_count']);
         }
     }
     function testWonMatchCount(): void
 {
-   
     foreach ($this->data->expectedUnsortedRanking() as $row) {
         $this->assertEquals($this->ranking->wonMatchCount($row['team_id'], $this->data->matches()), $row['won_match_count']);
     }
@@ -114,7 +110,6 @@ function testGoalAgainstCountDuringAMatch(): void
 
 function testLostMatchCount(): void 
 {
-   
     foreach ($this->data->expectedUnsortedRanking() as $row) {
         $this->assertEquals($this->ranking->lostMatchCount($row['team_id'], $this->data->matches()), $row['lost_match_count']);
     }
@@ -122,53 +117,10 @@ function testLostMatchCount(): void
 
 function testDrawMatchCount(): void 
 {
-    
     foreach ($this->data->expectedUnsortedRanking() as $row) {
         $this->assertEquals($this->ranking->drawMatchCount($row['team_id'], $this->data->matches()), $row['draw_match_count']);
     }
 }
-function testRankingRow(): void 
-{
-    foreach ($this->data->expectedUnsortedRanking() as $row) {
-        $this->assertEquals($this->ranking->rankingRow($row['team_id'], $this->data->matches()), $row);
-    }
-}
-
-function testUnsortedRanking(): void
-{
-    $this->assertEquals($this->ranking->unsortedRanking($this->data->teams(), $this->data->matches()), $this->data->expectedUnsortedRanking());
-}
-
-function testCompareRankingRow(): void
-{
-  $this->assertGreaterThan($this->ranking->compareRankingRow(['points' => 4, 'goal_difference'=>3, 'goal_for_count'=>3], 
-                                                             ['points' => 3, 'goal_difference'=>4, 'goal_for_count'=>4]), 0);
-  $this->assertGreaterThan($this->ranking->compareRankingRow(['points' => 4, 'goal_difference'=>4, 'goal_for_count'=>3], 
-                                                             ['points' => 4, 'goal_difference'=>3, 'goal_for_count'=>4]), 0);
-  $this->assertGreaterThan($this->ranking->compareRankingRow(['points' => 4, 'goal_difference'=>3, 'goal_for_count'=>4], 
-                                                             ['points' => 4, 'goal_difference'=>3, 'goal_for_count'=>3]), 0);
-  $this->assertEquals($this->ranking->compareRankingRow(['points' => 4, 'goal_difference'=>3, 'goal_for_count'=>2], 
-                                                        ['points' => 4, 'goal_difference'=>3, 'goal_for_count'=>2]), 0);
-  $this->assertLessThan($this->ranking->compareRankingRow(['points' => 3, 'goal_difference'=>4, 'goal_for_count'=>4], 
-                                                          ['points' => 4, 'goal_difference'=>3, 'goal_for_count'=>3]), 0);
-  $this->assertLessThan($this->ranking->compareRankingRow(['points' => 4, 'goal_difference'=>3, 'goal_for_count'=>4], 
-                                                          ['points' => 4, 'goal_difference'=>4, 'goal_for_count'=>3]), 0);
-  $this->assertLessThan($this->ranking->compareRankingRow(['points' => 4, 'goal_difference'=>3, 'goal_for_count'=>3], 
-                                                          ['points' => 4, 'goal_difference'=>3, 'goal_for_count'=>4]), 0);
-}
-
-function testSortedRanking(): void
-{
-    $this->assertEquals($this->ranking->sortedRanking($this->data->teams(), $this->data->matches()), $this->data->expectedSortedRanking());
-}
-
-
-
-
-
-
-
-
 
 
 
