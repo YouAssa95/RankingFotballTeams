@@ -13,5 +13,23 @@ use Illuminate\Routing\Controller as BaseController;
 class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+    
+    public function __construct(Repository $repository)
+    {
+        $this->repository = $repository;
+    }
+    
+    public function showRanking()
+    {
+        $ranking = $this->repository->sortedRanking();
+        return view('ranking', ['ranking' => $ranking]);
+     
+    }
 
+    public function showTeam(int $teamId)
+    {
+        $matchesJoues =  $this->repository->teamMatches($teamId);
+        // return $matchesJoues;
+        return view("matchesJoues", ['matchesJoues' => $matchesJoues]);
+    }
 }

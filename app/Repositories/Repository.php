@@ -59,14 +59,13 @@ class Repository
     {
         try {
             
-            $row= DB::table('teams')->where('id', $teamId)->get()->toArray();
+            $row = DB::table('teams')->where('id', $teamId)->get()->toArray();
             return ['id'=> $row[0]['id'],'name' => $row[0]['name']]; 
             
           } catch (Exception $exception) {
             throw new Exception('Équipe inconnue');
           }
        
-        
     }
 
 
@@ -74,17 +73,11 @@ class Repository
 
     function updateRanking(): void 
     {
-
         DB::table('ranking')->delete();
-        $teams = $this->teams();
-        $matches = $this->matches();
-
         $ranking = new Ranking();
-
-        $sortedRanking = $ranking -> sortedRanking( $teams , $matches);
+        $sortedRanking = $ranking -> sortedRanking( $this->teams() , $this->matches());
        
         foreach ($sortedRanking as $row) {
-
             DB::table('ranking')-> insert($row);
         }
 
@@ -92,20 +85,23 @@ class Repository
 
     function sortedRanking(): array 
     {
-        $rows = DB::table('ranking')->join('teams', 'ranking.team_id', '=', 'teams.id')->orderBy('rank')->get(['ranking.*','teams.name'])->toArray(); 
-        return $rows;
+        return DB::table('ranking')
+        ->join('teams', 'ranking.team_id', '=', 'teams.id')
+        ->orderBy('rank')
+        ->get(['ranking.*','teams.name'])
+        ->toArray(); 
     }
 
     function teamMatches($teamId) : array
     {
-        $rows = DB::table('matches as m')->join('teams as t0', 'm.team0', '=', 't0.id')->
-        join('teams as t1', 'm.team1', '=', 't1.id')
+        $rows = DB::table('matches as m')
+        ->join('teams as t0', 'm.team0', '=', 't0.id')
+        ->join('teams as t1', 'm.team1', '=', 't1.id')
         ->where('m.team0',$teamId)
         ->orwhere('m.team1',$teamId)
         ->orderBy('date')
         ->get(['m.*','t0.name as name0','t1.name as name1'])
         ->toArray(); 
-
         return $rows;
     }
 

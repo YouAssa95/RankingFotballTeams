@@ -16,12 +16,12 @@ class DatabaseSeeder extends Seeder
         $repository = new Repository(); 
         $repository->createDatabase();
 
-        $repository->insertTeam(['name' => 'Marseille']);
-        $repository->insertTeam(['name' => 'Paris']);
+        // $repository->insertTeam(['name' => 'Marseille']);
+        // $repository->insertTeam(['name' => 'Paris']);
 
-        $repository->insertMatch(['team0' =>2, 'team1' =>5, 
-        'score0'=>3, 'score1'=>0, 
-        'date'=>'2048-01-01 10:00']);
+        // $repository->insertMatch(['team0' =>2, 'team1' =>5, 
+        // 'score0'=>3, 'score1'=>0, 
+        // 'date'=>'2048-01-01 10:00']);
         
        
         

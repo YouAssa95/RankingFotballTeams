@@ -24,6 +24,7 @@ CREATE TABLE matches(
 -- rank, team_id et les statistiques qui vont de la colonne goal_for_count à la colonne points.
 -- 'goal_for_count' => 111, 'goal_against_count' => 92, 'goal_difference' => 19, 'points' =>
 
+
 CREATE TABLE ranking(
 
   rank INTEGER PRIMARY KEY AUTOINCREMENT,
