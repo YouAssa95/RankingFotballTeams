@@ -28,8 +28,6 @@ class Repository
         return DB::table('matches')-> insertGetId(['id'=>$match['id'] ,'team0' => $match['team0'],
         'team1' => $match['team1'],'score0' => $match['score0'],'score1'=> $match['score1'],
         'date'=> $match['date']]);
-        
-   
     }
 
     function teams(): array
@@ -59,8 +57,6 @@ class Repository
 
     function team($teamId) : array 
     {
-        
-// Exceptions 
         try {
             
             $row= DB::table('teams')->where('id', $teamId)->get()->toArray();
@@ -68,7 +64,6 @@ class Repository
             
           } catch (Exception $exception) {
             throw new Exception('Équipe inconnue');
-            // $message = $exception->getMessage();
           }
        
         
@@ -79,8 +74,7 @@ class Repository
 
     function updateRanking(): void 
     {
-            
-        
+
         DB::table('ranking')->delete();
         $teams = $this->teams();
         $matches = $this->matches();
@@ -88,14 +82,33 @@ class Repository
         $ranking = new Ranking();
 
         $sortedRanking = $ranking -> sortedRanking( $teams , $matches);
-        
+       
         foreach ($sortedRanking as $row) {
-            DB::table('ranking')-> insert(['team_id'=>$row['team_id'] ,'goalForCount' => $row['goal_for_count'] 
-            ,'goalAgainstCount' => $row['goal_against_count'] ,
-           'goalDifference'=> $row['goal_difference'] ,'points' => $row['points'], 'rank'=>$row['rank']]);
+
+            DB::table('ranking')-> insert($row);
         }
 
     }
+
+    function sortedRanking(): array 
+    {
+        $rows = DB::table('ranking')->join('teams', 'ranking.team_id', '=', 'teams.id')->orderBy('rank')->get(['ranking.*','teams.name'])->toArray(); 
+        return $rows;
+    }
+
+    function teamMatches($teamId) : array
+    {
+        $rows = DB::table('matches as m')->join('teams as t0', 'm.team0', '=', 't0.id')->
+        join('teams as t1', 'm.team1', '=', 't1.id')
+        ->where('m.team0',$teamId)
+        ->orwhere('m.team1',$teamId)
+        ->orderBy('date')
+        ->get(['m.*','t0.name as name0','t1.name as name1'])
+        ->toArray(); 
+
+        return $rows;
+    }
+
 
 
 

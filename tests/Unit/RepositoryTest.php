@@ -42,6 +42,7 @@ class RepositoryTest extends TestCase
         $this->assertEquals($this->repository->insertTeam($teams[18]), 19);
         $this->assertEquals($this->repository->insertTeam($teams[5]), 6);
         $this->assertEquals($this->repository->insertTeam($teams[10]), 11);
+
         $this->assertEquals($this->repository->insertMatch($matches[5]), 6);
         $this->assertEquals($this->repository->insertMatch($matches[0]), 1);
         $this->assertEquals($this->repository->matches(), [$matches[0], $matches[5]]);
@@ -87,4 +88,17 @@ class RepositoryTest extends TestCase
         $this->assertEquals($ranking, $this->data->expectedSortedRanking());
     }
 
+
+    function testSortedRanking(): void 
+    {
+        $this->repository->fillDatabase();
+        $this->repository->updateRanking();
+        $this->assertEquals($this->repository->sortedRanking(), $this->data->expectedSortedRankingWithName());
+    }
+
+    function testTeamMatches(): void 
+    {
+        $this->repository->fillDatabase();
+        $this->assertEquals($this->repository->teamMatches(4), $this->data->expectedMatchesForTeam4());
+    }
 }

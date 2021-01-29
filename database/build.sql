@@ -26,12 +26,16 @@ CREATE TABLE matches(
 
 CREATE TABLE ranking(
 
-  team_id INTEGER PRIMARY KEY AUTOINCREMENT,
-    goalForCount INTEGER NOT NULL,
-    goalAgainstCount INTEGER NOT NULL,
-    goalDifference INTEGER NOT NULL,
-    points INTEGER NOT NULL,
-    rank INTEGER NOT NULL,
-    UNIQUE(rank),
-    FOREIGN KEY (team_id) REFERENCES teams(id)
+  rank INTEGER PRIMARY KEY AUTOINCREMENT,
+  team_id INTEGER NOT NULL,
+  match_played_count INTEGER NOT NULL,
+  won_match_count INTEGER NOT NULL,
+  lost_match_count INTEGER NOT NULL,
+  draw_match_count INTEGER NOT NULL,
+  goal_for_count INTEGER NOT NULL,
+  goal_against_count INTEGER NOT NULL,
+  goal_difference INTEGER NOT NULL,
+  points INTEGER NOT NULL,
+  FOREIGN KEY (team_id) REFERENCES teams(id)
 );
+

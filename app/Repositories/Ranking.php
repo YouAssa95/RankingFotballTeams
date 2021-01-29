@@ -145,7 +145,7 @@ class Ranking
 
         for ($rank = 1; $rank <= count($teams); $rank++) {
             $result[$rank - 1]['rank']=$rank ;
-          }
+        }
         return $result;
     }
 
