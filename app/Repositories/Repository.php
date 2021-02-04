@@ -105,10 +105,23 @@ class Repository
         return $rows;
     }
 
+    function rankingRow($teamId) : array 
+    {
+        try {
+            
+                $row= DB::table('ranking')
+            ->join('teams', 'ranking.team_id', '=', 'teams.id')
+            ->where('ranking.team_id',$teamId)     
+            ->get(['ranking.rank','teams.name','ranking.team_id','ranking.match_played_count','ranking.won_match_count','ranking.lost_match_count',
+            'ranking.draw_match_count','ranking.goal_for_count','ranking.goal_against_count','ranking.goal_difference','ranking.points'])
+            ->toArray(); 
+            return $row[0];
 
+          } catch (Exception $exception) {
+            throw new Exception('Équipe inconnue');
+          }
 
-
-
-
+        
+    }
 
 }

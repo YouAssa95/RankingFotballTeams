@@ -22,6 +22,7 @@ class Controller extends BaseController
     public function showRanking()
     {
         $ranking = $this->repository->sortedRanking();
+       
         return view('ranking', ['ranking' => $ranking]);
      
     }
@@ -29,7 +30,8 @@ class Controller extends BaseController
     public function showTeam(int $teamId)
     {
         $matchesJoues =  $this->repository->teamMatches($teamId);
-        // return $matchesJoues;
-        return view("matchesJoues", ['matchesJoues' => $matchesJoues]);
+        $classementTeam = $this->repository->rankingRow($teamId);
+        // return view('team', ['matchesJoues' => $matchesJoues]);
+        return view('team', ['matchesJoues' => $matchesJoues,'classementTeam'=>$classementTeam]);
     }
 }

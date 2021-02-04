@@ -20,7 +20,6 @@ class RepositoryTest extends TestCase
         $this->data = new Data();
         $this->repository = new Repository();
         $this->repository->createDatabase();
-        
     }
 
 
@@ -32,7 +31,7 @@ class RepositoryTest extends TestCase
         $this->assertEquals($this->repository->insertTeam($teams[7]), 8);
         $this->assertEquals($this->repository->teams(), [$teams[2], $teams[4], $teams[7]]);
     }
-    
+
 
     function testMatchesAndInsertMatch(): void
     {
@@ -48,24 +47,23 @@ class RepositoryTest extends TestCase
         $this->assertEquals($this->repository->matches(), [$matches[0], $matches[5]]);
     }
 
-    
+
     function testfillDatabase(): void
     {
         $teams = $this->data->teams();
         $matches = $this->data->matches();
-        
+
         $this->repository->fillDatabase();
 
-        $this->assertEquals($this->repository->teams(),$teams );
-        $this->assertEquals($this->repository->matches(),$matches );
+        $this->assertEquals($this->repository->teams(), $teams);
+        $this->assertEquals($this->repository->matches(), $matches);
     }
 
     function testTeam(): void
     {
         $this->repository->fillDatabase();
 
-        foreach ($this->data->teams() as $team) 
-        {
+        foreach ($this->data->teams() as $team) {
             $this->assertEquals($this->repository->team($team['id']), $team);
         }
     }
@@ -89,16 +87,34 @@ class RepositoryTest extends TestCase
     }
 
 
-    function testSortedRanking(): void 
+    function testSortedRanking(): void
     {
         $this->repository->fillDatabase();
         $this->repository->updateRanking();
         $this->assertEquals($this->repository->sortedRanking(), $this->data->expectedSortedRankingWithName());
     }
 
-    function testTeamMatches(): void 
+    function testTeamMatches(): void
     {
         $this->repository->fillDatabase();
         $this->assertEquals($this->repository->teamMatches(4), $this->data->expectedMatchesForTeam4());
+    }
+    function testRankingRow(): void
+    {
+        $this->repository->fillDatabase();
+        $this->repository->updateRanking();
+        foreach ($this->data->expectedSortedRankingWithName() as $row) {
+            
+            $this->assertEquals($this->repository->rankingRow($row['team_id']), $row);
+        }
+    }
+
+    function testRankingRowThrowsExceptionIfTeamDoesNotExist(): void
+    {
+        $this->repository->fillDatabase();
+        $this->repository->updateRanking();
+        $this->expectException(Exception::class);
+        $this->expectExceptionMessage('Équipe inconnue');
+        $this->repository->rankingRow(10000);
     }
 }
