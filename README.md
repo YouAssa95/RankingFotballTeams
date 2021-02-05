@@ -17,5 +17,5 @@
 
 - Exécution des tests :
     ~~~
-    vendor/phpunit/phpunit/phpunit --testdox
+    php vendor/phpunit/phpunit/phpunit --testdox
     ~~~

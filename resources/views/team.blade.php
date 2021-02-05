@@ -44,9 +44,9 @@
             @foreach ($matchesJoues as $row)
             <tr>
                 <td>{{ $row['date']  }}</td>
-                <td>{{ $row['name0'] }}  </td>
+                <td><a href="{{route('teams.show', ['teamId'=>$row['id']])}}">{{ $row['name0'] }} </a></td>
                 <td>{{ $row['score0'] }} - {{ $row['score1'] }}  </td>
-                <td>{{ $row['name1'] }}  </td>
+                <td><a href="{{route('teams.show', ['teamId'=>$row['id']])}}">{{ $row['name1'] }} </a></td>
             </tr>
             @endforeach
         </thead>
